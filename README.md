@@ -17,7 +17,7 @@ The **Golden Path** flips that:
 
 ### 1. Clone this template
 ```bash
-git clone <your-repo-url> my-project
+git clone https://github.com/dropoflife13/Build_path.git my-project
 cd my-project
 ```
 *(Optional: reset Git history so it's your own fresh repo)*
