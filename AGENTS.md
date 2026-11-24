@@ -1,22 +1,34 @@
-# AGENTS.md — Workspace Rules for AI Agents
+# AGENTS.md — Workspace Constitution & Golden Path Router
 
-Follow these rules in every session inside this repository:
+Follow these rules in every session inside this repository.
 
-## 1. Grill Before Building
-- If `docs/SPEC.md` is still a template (contains `[TBD]` or has no concrete Goal / Acceptance Criteria), **do not write application code yet**.
-- Instead, run a structured **Grill interview** (ask concise, high-leverage questions one batch at a time) to clarify the user's goal, target users, stack, constraints, and out-of-scope items, then populate `docs/SPEC.md` and `docs/DECISIONS.md`.
+---
 
-## 2. Keep Scope Tight & Newbie-Friendly
-- Default to the **simplest working architecture** with minimal dependencies.
-- Never silently invent requirements, paid services, or complex abstractions that aren't in `docs/SPEC.md`.
-- When presenting choices to the user, mark the simplest/safest option as `(Recommended)`.
+## 1. The Golden Path Pipeline (8 Commands + `/retro`)
 
-## 3. Small Verified Slices
-- Implement one small, testable vertical slice at a time.
-- After every change, run the project's deterministic checks (typecheck, lint, tests, or build) and report the exact pass/fail result.
-- Never claim something works without verifying it.
+Operate sequentially through the **Brainweb Golden Path** when guiding the user:
 
-## 4. Preserve Decisions & Safety
-- Record meaningful architecture or tooling choices in `docs/DECISIONS.md` (short 3-line entries: Decision, Why, Tradeoff).
-- Never commit secrets, API keys, or `.env` files.
-- Never run destructive commands (`rm -rf`, `git reset --hard`, `DROP TABLE`, etc.) without explicit user confirmation.
+| Step | Command | Role | Required Output |
+| :---: | :--- | :--- | :--- |
+| **1** | `/grill [idea]` | `PM` | Interrogate requirements, find edge cases, cut 30% scope, define Acceptance Criteria. |
+| **2** | `/pitch [idea]` | `GR` + `PM` | Crisp 3-minute value proposition & positioning. |
+| **3** | `/to-spec [context]` | `SD` + `DB` | Populate `docs/SPEC.md` (TRD, data model, auth/security boundaries, failure domains) + `docs/DECISIONS.md`. |
+| **4** | `/to-tickets [spec]` | `PM` + `SD` | Decompose `docs/SPEC.md` into atomic, ordered tickets in `docs/TICKETS.md`. |
+| **5** | `/implement [ticket]` | `DB` `SEC` `UX` `IR` | Implement **one ticket at a time** and pass deterministic checks (typecheck, lint, tests, build). |
+| **6** | `/review [target]` | `SEC` + `SD` | STRIDE security review, invariant verification, and acceptance-criteria audit. |
+| **7** | `/harden [target]` | `SEC` + `DB` | Adversarial audit: auth/RLS bypasses, race conditions, server-side redaction, cache-control headers. |
+| **8** | `/research [topic]` | `RS` | Primary-source verification & first-principles grounding. |
+| **—** | `/retro [session]` | `RS` + Meta | Log tacit lessons and failure boundaries (`breaks:`) into `docs/RETRO.md`. |
+
+---
+
+## 2. Hard Invariants
+
+1. **Grill Before Building:** If `docs/SPEC.md` still contains `[TBD]` placeholders, **do not write application code**. Run `/grill` first, then `/to-spec`.
+2. **Gate Mode vs. Insight Mode:**
+   - **Gate Mode** (default on `/implement`, `/review`, `/harden`): Strictly block on missing verification, security flaws, or broken invariants. Output `GATE: FAIL <reason> — <required fix>`.
+   - **Insight Mode** (during `/grill`, `/pitch`, exploration): Offer concise, non-blocking suggestions and mark the simplest beginner-friendly option `(Recommended)`.
+3. **Deterministic Verification:** Never claim code works without running the project's actual build/typecheck/test commands and reporting the exact output.
+4. **Anti-Hallucination (`/research`):** If verified primary-source data is missing, halt and state:
+   `WARNING: I do not have verified data for this. Hallucination risk is high. Please provide a source.`
+5. **Safety:** Never commit secrets or `.env` files. Never run destructive commands (`rm -rf`, `git reset --hard`, `DROP TABLE`) without explicit user confirmation.

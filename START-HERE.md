@@ -1,55 +1,81 @@
 # START HERE — The Newbie Golden Path
 
-Welcome. Follow these **4 steps in order**. Do not skip Step 2—it is the single biggest difference between a messy AI project and a clean one.
+Welcome. This starter follows the **Brainweb Golden Path**—a simple, step-by-step pipeline so you never get stuck in messy AI-generated code. **Always start with Step 1 (`/grill`).**
 
 ---
 
-## Step 1: Pre-Flight Check (1 Minute)
+## Step 0: Pre-Flight Check (1 Minute)
 
-Open [docs/CHECKLIST.md](docs/CHECKLIST.md) and confirm you have:
-- [ ] Git installed (`git --version`)
-- [ ] This folder opened in **Antigravity**, **Claude Code**, or **Cursor**
-- [ ] A rough 1–3 sentence idea of what you want to build
-
----
-
-## Step 2: Start With a Grill (5–10 Minutes)
-
-Before asking the AI to write any code, make it **grill you** on your idea.
-
-- **In Antigravity:** Type `/grill-me` followed by your 1–3 sentence idea.
-  > Example: `/grill-me I want to build a simple personal expense tracker web app where I can log expenses and see my monthly total.`
-- **In Claude Code / Cursor / Any other AI chat:** Copy and paste the prompt from [docs/GRILL-PROMPT.md](docs/GRILL-PROMPT.md) and add your 1–3 sentence idea at the bottom.
-
-Answer the AI's questions one by one. If you don't know the answer to a technical question, just say *"recommend the simplest option for a beginner."*
+Open [docs/CHECKLIST.md](docs/CHECKLIST.md) and confirm:
+- [ ] Git is installed (`git --version`)
+- [ ] This folder is open in **Antigravity**, **Claude Code**, or **Cursor**
+- [ ] You have a rough 1–3 sentence idea of what you want to build
 
 ---
 
-## Step 3: Lock Your Spec & Decisions (2 Minutes)
+## Step 1: `/grill [idea]` — Interrogate & Cut Scope (5–10 Minutes)
 
-At the end of the Grill session, tell the AI:
-> *"Fill out `docs/SPEC.md` and `docs/DECISIONS.md` with everything we just agreed on. Do not write application code yet."*
+Before writing a single line of code, make the AI grill you on your idea, find edge cases, and **cut 30% of unnecessary v1 scope**.
 
-Review `docs/SPEC.md` quickly:
-- Does **Goal** match what you actually want?
-- Is **Out of Scope** clear so the AI doesn't overbuild?
-- Are the **Acceptance Criteria** easy to test?
+- **In Antigravity:** Type `/grill-me` (or `/grill`) followed by your 1–3 sentence idea.
+  > Example: `/grill I want to build a personal expense tracker web app where I can log expenses and see my monthly total.`
+- **In Claude Code / Cursor:** Copy and paste [docs/GRILL-PROMPT.md](docs/GRILL-PROMPT.md) with your idea at the bottom.
 
-Once it looks right, commit your spec:
+*(Tip: If you don't know the answer to a technical question, just say: **"recommend the simplest option for a beginner."**)*
+
+---
+
+## Step 2: `/pitch [idea]` — Clarify the Value *(Optional for tiny personal scripts)*
+
+Ask the AI:
+> `/pitch` — Summarize what we're building, who it's for, and why it matters in a crisp 3-minute pitch.
+
+---
+
+## Step 3: `/to-spec` — Lock the Technical Spec (`docs/SPEC.md`)
+
+Ask the AI:
+> `/to-spec` — Fill out `docs/SPEC.md` and `docs/DECISIONS.md` with our agreed scope, data model, auth/security boundaries, and Acceptance Criteria. Do not write application code yet.
+
+Review `docs/SPEC.md`, then save your first checkpoint:
 ```bash
 git add docs/SPEC.md docs/DECISIONS.md
-git commit -m "docs: lock initial project spec from grill session"
+git commit -m "docs: lock initial spec from grill session"
 ```
 
 ---
 
-## Step 4: Build One Small Slice at a Time
+## Step 4: `/to-tickets` — Break Into Small Atomic Tickets (`docs/TICKETS.md`)
 
-Now tell the AI:
-> *"Read `AGENTS.md` and `docs/SPEC.md`. Propose a 3–5 step build plan, then implement Step 1 only and verify it works."*
+Ask the AI:
+> `/to-tickets` — Break `docs/SPEC.md` into 3–7 small, ordered, verifiable tickets in `docs/TICKETS.md` with clear dependencies.
 
-**Golden Rules while building:**
-1. **One slice at a time:** Never ask the AI to build the whole app in one shot.
-2. **Verify every slice:** Run the build/test/app after each step before moving on.
-3. **Commit working checkpoints:** Every time something works, run `git commit` so you can always roll back safely.
-4. **Update `docs/DECISIONS.md`:** Whenever you change direction, have the AI log *why* in `docs/DECISIONS.md`.
+---
+
+## Step 5: `/implement [ticket]` — Build One Ticket at a Time
+
+Ask the AI:
+> `/implement T-01` — Implement Ticket 1 only, run the build/typecheck/tests to verify it works, and show me the exact result.
+
+Commit after every passing ticket:
+```bash
+git add .
+git commit -m "feat: complete T-01"
+```
+
+---
+
+## Steps 6 & 7: `/review` & `/harden` — Check Security & Edge Cases
+
+Once your core tickets work:
+- Run `/review` to check for security flaws (STRIDE), broken invariants, and missed acceptance criteria.
+- Run `/harden` for an adversarial pass (bad inputs, auth bypasses, race conditions, leaked secrets, cache headers).
+
+---
+
+## Step 8 & `/retro` — Research Anytime, Capture Lessons After
+
+- **`/research [topic]`** *(use anytime)*: Deep-dive with primary sources only—forces the AI to say *"I do not know"* instead of guessing.
+- **`/retro`**: At the end of a session, log what broke and what worked into [docs/RETRO.md](docs/RETRO.md) using `WHEN <trigger> -> DO <action> | breaks: <boundary>`.
+
+See [docs/GOLDEN-PATH.md](docs/GOLDEN-PATH.md) for copy-pasteable prompts for every command.
